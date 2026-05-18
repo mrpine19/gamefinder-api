@@ -2,6 +2,8 @@ package br.com.gamefinder.services;
 
 import br.com.gamefinder.models.Game;
 import br.com.gamefinder.repositories.GameRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,8 +18,8 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public List<Game> getAllGames() {
-        return gameRepository.findAll();
+    public Page<Game> getAllGames(Pageable pageable) {
+        return gameRepository.findAll(pageable);
     }
 
     public Game getGameById(Long id){

@@ -1,6 +1,7 @@
 package br.com.gamefinder.assembler;
 
 import br.com.gamefinder.controllers.GameController;
+import br.com.gamefinder.dtos.GameResponseDTO;
 import br.com.gamefinder.models.Game;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -10,15 +11,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class GameAssembler implements RepresentationModelAssembler<Game, EntityModel<Game>> {
+public class GameAssembler implements RepresentationModelAssembler<Game, EntityModel<GameResponseDTO>> {
     @Override
-    public EntityModel<Game> toModel(Game game) {
+    public EntityModel<GameResponseDTO> toModel(Game game) {
+        GameResponseDTO dto = new GameResponseDTO(game.getId(), game.getTitle());
         return EntityModel.of(
-                game,
-                linkTo(methodOn(GameController.class).getGameById(game.getId())).withSelfRel(),
-                linkTo(methodOn(GameController.class).getAllGames()).withRel("games"),
-                linkTo(methodOn(GameController.class).getGenreById(game.getGenre().getId())).withRel("genre"),
-                linkTo(methodOn(GameController.class).getPlatformById(game.getPlatform().getId())).withRel("platform")
+                dto,
+                linkTo(methodOn(GameController.class).getGameById(game.getId())).withSelfRel()
         );
     }
 }
