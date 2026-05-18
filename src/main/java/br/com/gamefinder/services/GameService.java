@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @Service
 public class GameService {
     private final GameRepository gameRepository;
@@ -26,5 +24,11 @@ public class GameService {
         return gameRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found")
         );
+    }
+
+    public void updateFromWishlist(Long gameId) {
+        Game game = getGameById(gameId);
+        game.setInWishlist(!game.isInWishlist());
+        gameRepository.save(game);
     }
 }
